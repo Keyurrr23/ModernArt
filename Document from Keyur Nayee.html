@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Art Interior - Premium Design Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* --- FURNITURE THEME BACKGROUND --- */
+            background-image: url('https://images.unsplash.com/photo-1618220179428-d24a9fa7dc9d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Modern living room with furniture */
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the image */
+            background-attachment: fixed; /* Keep background fixed when scrolling */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            color: #3a3a3a;
+            position: relative; /* Needed for pseudo-element overlay */
+        }
+
+        /* Subtle overlay to make content more readable */
+        body::before {
+
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.85); /* Light white overlay for better readability */
+            z-index: -1; /* Place behind content */
+        }
+        
+        .main-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border-radius: 20px; /* More rounded corners */
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15); /* Stronger, modern shadow */
+            padding: 2.5rem; /* Slightly more padding */
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            border-radius: 10px; /* More rounded buttons */
+            font-weight: 600; /* Slightly bolder text */
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.5); /* Enhanced shadow on hover */
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            transition: all 0.3s ease-in-out;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.5);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            transition: background-color 0.3s ease-in-out;
+            border-radius: 8px; /* Rounded danger button */
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .price-display {
+            font-size: 2.8rem; /* Slightly larger price display */
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .receipt-modal {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .input-field {
+             border-color: #d1d5db;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px; /* Rounded input fields */
+            padding: 0.75rem 1rem; /* More comfortable padding */
+        }
+        .input-field:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3); /* More prominent focus ring */
+            outline: none;
+        }
+        
+        /* Styles for the detailed receipt - applied to both preview and PDF */
+        #receipt-content {
+            width: 190mm; /* Fixed width for PDF content area */
+            margin: 0 auto; /* Center the content */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            padding: 10px; /* Reduced padding */
+        }
+
+        .receipt-header { text-align: center; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; } /* Reduced padding/margin */
+        .receipt-header h1 { margin: 0; font-size: 1.6em; color: #4f46e5; } /* Adjusted font size */
+        .receipt-header p { font-size: 0.8em; color: #666; } /* Adjusted font size */
+
+        .receipt-section {
+            margin-bottom: 15px; /* Reduced margin */
+            page-break-inside: avoid; /* Prevent breaking inside a section */
+            page-break-after: auto; /* Allow sections to flow on the same page */
+        }
+
+        .receipt-section h2 { 
+            font-size: 1.2em; /* Adjusted font size */
+            font-weight: 600; 
+            border-bottom: 1px solid #ddd; 
+            padding-bottom: 3px; /* Reduced padding */
+            margin-top: 15px; /* Reduced margin */
+            margin-bottom: 8px; /* Reduced margin */
+            color: #4f46e5;
+        }
+        .receipt-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 8px; /* Reduced margin */
+            table-layout: fixed; /* Ensures consistent column widths */
+        }
+        .receipt-table th, .receipt-table td { 
+            border: 1px solid #ddd; 
+            padding: 4px; /* Reduced padding */
+            text-align: left; 
+            font-size: 0.75em; /* Adjusted font size */
+            word-wrap: break-word; /* Ensures long words break */
+        }
+        .receipt-table th { background-color: #f2f2f2; }
+        .receipt-remarks ul { list-style-type: disc; margin-left: 15px; font-size: 0.75em; } /* Reduced margin and font size */
+        .receipt-remarks li { margin-bottom: 3px; } /* Reduced space between list items */
+
+        /* Modern UI additions */
+        .header-text {
+            color: #2a2a2a; /* Darker header text for contrast */
+            font-weight: 700;
+        }
+        .sub-header-text {
+            color: #5a5a5a; /* Slightly lighter sub-header text */
+        }
+        .section-title {
+            color: #4f46e5; /* Accent color for section titles */
+            font-weight: 600;
+            border-bottom-color: #e0e0e0; /* Lighter border for sections */
+        }
+        .bg-gray-50-modern {
+            background-color: rgba(249, 250, 251, 0.9); /* Slightly transparent background for item add section */
+            border-radius: 12px; /* More rounded */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Subtle shadow */
+        }
+        .table-shadow {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Shadow for the table */
+            border-radius: 12px; /* Rounded table corners */
+            overflow: hidden; /* Ensures shadow and border-radius apply correctly */
+        }
+        .table-shadow thead tr {
+            border-radius: 12px 12px 0 0; /* Top corners rounded */
+        }
+        .table-shadow tbody tr:last-child td {
+            border-bottom: none; /* No bottom border on last row */
+        }
+
+        /* Company branding */
+        .company-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d3748;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+        }
+        .company-tagline {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-weight: 400;
+            margin-top: 0.5rem;
+        }
+
+        /* Furniture showcase section */
+        .furniture-showcase {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.95) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .furniture-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .furniture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .furniture-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid #4f46e5;
+        }
+        .furniture-content {
+            padding: 1.5rem;
+        }
+        .furniture-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .furniture-description {
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-6 px-3 sm:py-10 sm:px-4">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-12 text-center">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhIGf7LqjctBSlkF59kQCzjFrjPja7hdeljw&s" alt="Modern Art Interior Logo" class="mx-auto h-20 w-auto">
+            <p class="company-tagline mt-4">Premium Design Solutions & Custom Furniture</p>
+        </header>
+
+        <div class="furniture-showcase">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">Our Premium Collections</h2>
+            
+            <div class="mb-8" id="packages-section">
+                <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">Packages</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button id="btn-2bhk" class="btn-primary px-6 py-2 text-white">2 BHK Package</button>
+                    <button id="btn-3bhk" class="btn-primary px-6 py-2 text-white">3 BHK Package</button>
+                    <button id="btn-4bhk" class="btn-primary px-6 py-2 text-white">4 BHK Package</button>
+                    <button id="btn-5bhk" class="btn-primary px-6 py-2 text-white">5 BHK Package</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="furniture-showcase" id="2bhk-packages-section">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">2 BHK Packages</h2>
+            <div class="showcase-grid">
+                <div class="furniture-card" id="2bhk-super-saver-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Cozy and modern 2BHK living room" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">2BHK Super Saver Package</h3>
+                        <p class="furniture-description">An affordable and stylish 2BHK interior solution. Click to add the base price of ₹9,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="2bhk-royal-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Elegant and royal 2BHK interior design" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">2BHK Royal Package</h3>
+                        <p class="furniture-description">A premium and luxurious 2BHK interior experience. Click to add the base price of ₹11,99,000 to your quote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="furniture-showcase" id="3bhk-packages-section">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">3 BHK Packages</h2>
+            <div class="showcase-grid">
+                <div class="furniture-card" id="3bhk-super-saver-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Modern and comfortable sofa for a saver package" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">3BHK Super Saver Package</h3>
+                        <p class="furniture-description">A comprehensive 3BHK interior package. Click to add the base price of ₹11,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="3bhk-royal-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Collage of royal interior design package rooms" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">3BHK Royal Package</h3>
+                        <p class="furniture-description">An exclusive 3BHK interior package. Click to add the base price of ₹15,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="3bhk-luxury-package" style="cursor: pointer;">
+                    <img src="https://images.pexels.com/photos/6585759/pexels-photo-6585759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                         alt="Luxurious and spacious modern living room" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">3BHK Luxury Package</h3>
+                        <p class="furniture-description">A premium 3BHK interior package. Click to add the base price of ₹21,99,000 to your quote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="furniture-showcase" id="4bhk-packages-section">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">4 BHK Packages</h2>
+            <div class="showcase-grid">
+                <div class="furniture-card" id="4bhk-super-saver-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Stylish 4BHK living room with a green sofa" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">4BHK Super Saver Package</h3>
+                        <p class="furniture-description">A complete and affordable 4BHK interior package. Click to add the base price of ₹15,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="4bhk-royal-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Elegant 4BHK living room with plush seating" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">4BHK Royal Package</h3>
+                        <p class="furniture-description">An exclusive and grand 4BHK interior package. Click to add the base price of ₹21,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="4bhk-luxury-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Luxurious 4BHK living room with large modular sofa" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">4BHK Luxury Package</h3>
+                        <p class="furniture-description">The ultimate premium 4BHK interior experience. Click to add the base price of ₹27,99,000 to your quote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="furniture-showcase" id="5bhk-packages-section">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">5 BHK Packages</h2>
+            <div class="showcase-grid">
+                <div class="furniture-card" id="5bhk-super-saver-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Bright and spacious 5BHK bedroom with modern furniture" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">5BHK Super Saver Package</h3>
+                        <p class="furniture-description">A complete interior package for your 5BHK space. Click to add the base price of ₹19,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="5bhk-royal-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1604578762246-41134e37f9cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         alt="Sophisticated 5BHK living room with dark tones and statement lighting" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">5BHK Royal Package</h3>
+                        <p class="furniture-description">An exclusive and royal interior package for your 5BHK. Click to add the base price of ₹25,99,000 to your quote.</p>
+                    </div>
+                </div>
+                <div class="furniture-card" id="5bhk-luxury-package" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?q=80&w=1992&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Ultra-modern luxurious 5BHK living space with a curved sofa" class="furniture-image">
+                    <div class="furniture-content">
+                        <h3 class="furniture-title">5BHK Luxury Package</h3>
+                        <p class="furniture-description">The ultimate luxury interior experience for your 5BHK. Click to add the base price of ₹33,99,000 to your quote.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main-container p-4 sm:p-8 mb-12">
+            <div class="mb-8">
+                 <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Client Information</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="client-name" class="block text-sm font-medium text-gray-700 mb-1">Client Name</label>
+                        <input type="text" id="client-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="Full Name">
+                    </div>
+                    <div>
+                        <label for="client-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="text" id="client-phone" maxlength="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="10-Digit Mobile Number">
+                    </div>
+                    <div>
+                        <label for="client-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="client-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="Email Address">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Sales Member Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                   <div>
+                       <label for="sales-name" class="block text-sm font-medium text-gray-700 mb-1">Sales Member Name</label>
+                       <input type="text" id="sales-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="Sales Member's Full Name">
+                   </div>
+                   <div>
+                       <label for="sales-phone" class="block text-sm font-medium text-gray-700 mb-1">Sales Member Phone</label>
+                       <input type="text" id="sales-phone" maxlength="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="10-Digit Mobile Number">
+                   </div>
+                   <div>
+                       <label for="sales-email" class="block text-sm font-medium text-gray-700 mb-1">Sales Member Email</label>
+                       <input type="email" id="sales-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="Sales Member's Email Address">
+                   </div>
+               </div>
+           </div>
+            
+            <div class="mb-8">
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Design Theme</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="design-theme" class="block text-sm font-medium text-gray-700 mb-1">Theme Name / Details</label>
+                        <input type="text" id="design-theme" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="e.g., Modern, Minimalist">
+                    </div>
+                    <div>
+                        <label for="additional-features-cost" class="block text-sm font-medium text-gray-700 mb-1">Additional Costs (₹)</label>
+                        <input type="number" id="additional-features-cost" value="0" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Add Items to Estimate</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end bg-gray-50-modern p-4">
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-4">
+                        <label for="item-name" class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                        <input type="text" id="item-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="e.g., Wardrobe">
+                    </div>
+                    <div class="col-span-1">
+                        <label for="item-quantity" class="block text-sm font-medium text-gray-700 mb-1">Qty</label>
+                        <input type="number" id="item-quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                     <div class="col-span-1">
+                        <label for="item-sqft" class="block text-sm font-medium text-gray-700 mb-1">Sqft</label>
+                        <input type="number" id="item-sqft" value="1" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3">
+                         <label for="item-cost-per-sqft" class="block text-sm font-medium text-gray-700 mb-1">Cost/Sqft (₹)</label>
+                        <input type="number" id="item-cost-per-sqft" value="0" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-2">
+                        <button id="add-item-btn" class="btn-primary w-full px-4 py-2 text-white font-medium">+ Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Estimated Items</h2>
+                <div class="overflow-x-auto table-shadow">
+                    <table class="min-w-full bg-white rounded-lg">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="text-left py-3 px-4 font-semibold text-sm">Item</th>
+                                <th class="text-center py-3 px-4 font-semibold text-sm">Qty</th>
+                                <th class="text-center py-3 px-4 font-semibold text-sm">Sqft</th>
+                                <th class="text-right py-3 px-4 font-semibold text-sm">Cost/Sqft</th>
+                                <th class="text-right py-3 px-4 font-semibold text-sm">Total</th>
+                                <th class="text-center py-3 px-4 font-semibold text-sm"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-list-body">
+                           <tr id="no-items-row">
+                               <td colspan="6" class="text-center py-10 text-gray-500">No items added yet.</td>
+                           </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mb-8 mt-8">
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Deduct Items from Package (Discount)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end bg-gray-50-modern p-4">
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-4">
+                        <label for="deduction-item-name" class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                        <input type="text" id="deduction-item-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field" placeholder="e.g., Old Wardrobe Removal">
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3">
+                        <label for="deduction-item-quantity" class="block text-sm font-medium text-gray-700 mb-1">Qty</label>
+                        <input type="number" id="deduction-item-quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3">
+                         <label for="deduction-item-price" class="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+                        <input type="number" id="deduction-item-price" value="0" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-field">
+                    </div>
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-2">
+                        <button id="add-deduction-btn" class="btn-danger w-full px-4 py-2 text-white font-medium">+ Add Deduction</button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-3 section-title">Deducted Items</h2>
+                <div class="overflow-x-auto table-shadow">
+                    <table class="min-w-full bg-white rounded-lg">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="text-left py-3 px-4 font-semibold text-sm">Item</th>
+                                <th class="text-center py-3 px-4 font-semibold text-sm">Qty</th>
+                                <th class="text-right py-3 px-4 font-semibold text-sm">Price</th>
+                                <th class="text-right py-3 px-4 font-semibold text-sm">Total Deduction</th>
+                                <th class="text-center py-3 px-4 font-semibold text-sm"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="deduction-list-body">
+                           <tr id="no-deductions-row">
+                               <td colspan="5" class="text-center py-10 text-gray-500">No deductions added yet.</td>
+                           </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="mt-8 pt-6 border-t-2 border-dashed">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <p class="text-lg text-gray-600">Grand Total</p>
+                        <p class="price-display" id="grand-total">₹0.00</p>
+                    </div>
+                    <button id="generate-receipt-btn" class="btn-primary w-full md:w-auto px-6 py-3 text-white font-bold text-lg">
+                        Generate Detailed Quote
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="receipt-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 receipt-modal">
+            <div class="bg-white rounded-lg max-w-4xl w-full p-4 sm:p-6 max-h-screen flex flex-col">
+                <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                    <h3 class="text-lg sm:text-xl font-semibold">Quotation Preview</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                </div>
+                
+                <div class="overflow-y-auto mb-4 flex-grow">
+                    <div id="receipt-content" class="bg-white border rounded-lg">
+                        </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-3 flex-shrink-0">
+                    <button id="download-receipt-btn" class="btn-primary py-2 text-white font-medium">Download PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-12 mb-6">
+            <div class="bg-white bg-opacity-90 rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Modern Art Interior</h3>
+                <p class="text-gray-600 mb-4">Creating Beautiful Spaces</p>
+                <p class="text-sm text-gray-500">📍Shivam Complex, 214, Science City Rd, Sola, Ahmedabad, Gujarat 380060, India | 📞 +91 87996-16100 | ✉️ reachmodernart@gmail.com | www.modernartinterior.in</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- DOM ELEMENTS ---
+        const clientPhoneInput = document.getElementById('client-phone');
+        const itemNameInput = document.getElementById('item-name');
+        const itemQuantityInput = document.getElementById('item-quantity');
+        const itemSqftInput = document.getElementById('item-sqft');
+        const itemCostPerSqftInput = document.getElementById('item-cost-per-sqft');
+        const addItemBtn = document.getElementById('add-item-btn');
+        const itemListBody = document.getElementById('item-list-body');
+        const noItemsRow = document.getElementById('no-items-row');
+        const grandTotalDisplay = document.getElementById('grand-total');
+        const generateReceiptBtn = document.getElementById('generate-receipt-btn');
+        const receiptModal = document.getElementById('receipt-modal');
+        const receiptContent = document.getElementById('receipt-content');
+        const closeModalBtn = document.getElementById('close-modal');
+        const downloadReceiptBtn = document.getElementById('download-receipt-btn');
+        const additionalFeaturesCostInput = document.getElementById('additional-features-cost');
+        
+        // Package Buttons
+        const btn2bhk = document.getElementById('btn-2bhk');
+        const btn3bhk = document.getElementById('btn-3bhk');
+        const btn4bhk = document.getElementById('btn-4bhk');
+        const btn5bhk = document.getElementById('btn-5bhk');
+
+        // 2BHK Package Cards
+        const twoBhkSuperSaverCard = document.getElementById('2bhk-super-saver-package');
+        const twoBhkRoyalCard = document.getElementById('2bhk-royal-package');
+
+        // 3BHK Package Cards
+        const threeBhkSuperSaverCard = document.getElementById('3bhk-super-saver-package');
+        const threeBhkLuxuryCard = document.getElementById('3bhk-luxury-package');
+        const threeBhkRoyalCard = document.getElementById('3bhk-royal-package');
+
+        // 4BHK Package Cards
+        const fourBhkSuperSaverCard = document.getElementById('4bhk-super-saver-package');
+        const fourBhkLuxuryCard = document.getElementById('4bhk-luxury-package');
+        const fourBhkRoyalCard = document.getElementById('4bhk-royal-package');
+
+        // 5BHK Package Cards
+        const fiveBhkSuperSaverCard = document.getElementById('5bhk-super-saver-package');
+        const fiveBhkRoyalCard = document.getElementById('5bhk-royal-package');
+        const fiveBhkLuxuryCard = document.getElementById('5bhk-luxury-package');
+
+
+        // Sales member fields
+        const salesNameInput = document.getElementById('sales-name');
+        const salesPhoneInput = document.getElementById('sales-phone');
+        const salesEmailInput = document.getElementById('sales-email');
+
+        // Deduction fields
+        const deductionItemNameInput = document.getElementById('deduction-item-name');
+        const deductionItemQuantityInput = document.getElementById('deduction-item-quantity');
+        const deductionItemPriceInput = document.getElementById('deduction-item-price'); 
+        const addDeductionBtn = document.getElementById('add-deduction-btn');
+        const deductionListBody = document.getElementById('deduction-list-body');
+        const noDeductionsRow = document.getElementById('no-deductions-row');
+
+        // Variable to store the currently selected package type
+        let selectedPackageType = null; 
+
+        // Material details for each package (manually extracted from PDFs)
+        const packageMaterialDetails = {
+            "2BHK Super Saver Package": [
+                { material: "Ply", specification: "self imported - Grade - IS 303 BWR (Boiling Water Resistance)" },
+                { material: "Inner Laminate", specification: "0.8 MM Durian/amulya etc.." },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc" },
+                { material: "Kitchen tandem Soft Close", specification: "Unique/amron etc.." },
+                { material: "Hinges", specification: "Soft close- Unique/amron etc.." },
+                { material: "Led lights", specification: "15w Self Imported" },
+                { material: "Electric Wire", specification: "jainson or similar (850)" },
+                { material: "Hardware", specification: "ISI Marked" },
+                { material: "Channels", specification: "Ebco, unique, Bhavya or similar" },
+                { material: "Foam", specification: "curlon" },
+                { material: "Mirrors", specification: "4mm mirrors" },
+                { material: "Paint", specification: "Asian paint - Royal paint" },
+                { material: "Pop gypsum", specification: "Gyproc-saint gobain" }
+            ],
+            "2BHK Royal Package": [
+                { material: "Plywood", specification: "MR/BWR - ISI 303 (60 - 62 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM / 1200 - 1500 RS)" },
+                { material: "Kitchen Tandems", specification: "GODREJ/EBCO (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "GODREJ/EBCO (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W / 6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "EBCO OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "EBCO OR SIMILAR (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "3BHK Super Saver Package": [
+                { material: "Ply", specification: "self imported - Grade - IS 303 BWR (Boiling Water Resistance)" },
+                { material: "Inner Laminate", specification: "0.8 MM Durian/amulya etc.." },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc" },
+                { material: "Kitchen tandem Soft Close", specification: "Unique/amron etc.." },
+                { material: "Hinges", specification: "Soft close- Unique/amron etc.." },
+                { material: "Led lights", specification: "15w Self Imported" },
+                { material: "Electric Wire", specification: "jainson or similar (850)" },
+                { material: "Hardware", specification: "ISI Marked" },
+                { material: "Channels", specification: "unique,Bhavya or similar" },
+                { material: "Foam", specification: "kurlon" },
+                { material: "Mirrors", specification: "4mm mirrors" },
+                { material: "Paint", specification: "Asian paint – Royal paint" },
+                { material: "Pop gypsum", specification: "Gyproc-saint gobain" }
+            ],
+            "3BHK Luxury Package": [ 
+                { material: "Plywood", specification: "MR/BWR - ISI 303 (70 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM / 1200 - 1500 RS)" },
+                { material: "Kitchen Tandems", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W / 6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "HETTICH (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "3BHK Royal Package": [
+                { material: "Plywood", specification: "MR/BWR - ISI 303 (60 - 62 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM / 1200 - 1500 RS)" },
+                { material: "Kitchen Tandems", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W / 6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "IN QUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "4BHK Super Saver Package": [
+                { material: "Ply", specification: "self imported - Grade - IS 303 BWR (Boiling Water Resistance)" },
+                { material: "Inner Laminate", specification: "0.8 MM Durian/amulya etc.." },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc" },
+                { material: "Kitchen tandem Soft Close", specification: "UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Hinges", specification: "Soft close- UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Led lights", specification: "15w Self Imported" },
+                { material: "Electric Wire", specification: "jainson or similar (850)" },
+                { material: "Hardware", specification: "ISI Marked" },
+                { material: "Channels", specification: "UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Foam", specification: "curlon" },
+                { material: "Mirrors", specification: "4mm mirrors" },
+                { material: "Paint", specification: "Asian paint - Royal paint" },
+                { material: "Pop gypsum", specification: "Gyproc-saint gobain" }
+            ],
+            "4BHK Royal Package": [
+                { material: "Plywood", specification: "MR/BWR - ISI 303 (60 - 62 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM / 1200 - 1500 RS)" },
+                { material: "Kitchen Tandems", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W / 6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "4BHK Luxury Package": [
+                { material: "Plywood", specification: "MR/BWR - ISI 303 (70 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM / 1200 - 1500 RS)" },
+                { material: "Kitchen Tandems", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W / 6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "HETTICH (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "5BHK Super Saver Package": [
+                { material: "Ply", specification: "self imported - Grade - IS 303 BWR" },
+                { material: "Inner Laminate", specification: "0.8 MM Durian/amulya etc.." },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc" },
+                { material: "Kitchen tandem Soft Close", specification: "UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Hinges", specification: "Soft close- UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Led lights", specification: "15w Self Imported" },
+                { material: "Electric Wire", specification: "jainson or similar (850)" },
+                { material: "Hardware", specification: "ISI Marked" },
+                { material: "Channels", specification: "UNIQUE, INQUE, GASCO, AMRON OR SIMILAR" },
+                { material: "Foam", specification: "kurlon" },
+                { material: "Mirrors", specification: "4mm mirrors" },
+                { material: "Paint", specification: "Asian paint - Royal paint" },
+                { material: "Pop gypsum", specification: "Gyproc-saint gobain" }
+            ],
+            "5BHK Royal Package": [
+                { material: "Plywood", specification: "MR/BWR-ISI 303 (60-62 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM/1200-1500 RS)" },
+                { material: "Kitchen Tandems", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "GODREJ (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W/6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ],
+            "5BHK Luxury Package": [
+                { material: "Plywood", specification: "MR/BWR-ISI 303 (60-62 RS)" },
+                { material: "Inner Laminate", specification: "VIRGO/DURIAN OR SIMILAR (0.8MM FABRIC/WOODEN - 410 RS)" },
+                { material: "Outer Laminate", specification: "Nelson, Neltouch, Ristal, Rolex, Real mica, Wood Flower, Garv Etc (1MM/1200-1500 RS)" },
+                { material: "Kitchen Tandems", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Hinges", specification: "HETTICH (PREMIUM SOFT CLOSE)" },
+                { material: "Led Light", specification: "MODERNART OR SIMILAR (15W/6 INCH)" },
+                { material: "Electric Wire", specification: "RR CABLES (STANDARD)" },
+                { material: "Hardware", specification: "INQUE, GASCO, AMRON OR SIMILAR (ISI MARKED)" },
+                { material: "Drawer Channels", specification: "HETTICH (ISI MARKED)" },
+                { material: "Foam", specification: "KURL-ON OR SIMILAR (STANDARD)" },
+                { material: "Mirror", specification: "SAINT-GOBAIN OR SIMILAR (5 MM)" },
+                { material: "Putty", specification: "BIRLA (STANDARD)" },
+                { material: "Paint", specification: "ASIAN PAINT (ROYAL PLASTIC)" },
+                { material: "Pop", specification: "SAINT GOBAIN - GYPROC (STANDARD)" }
+            ]
+        };
+
+
+        // --- FUNCTIONS ---
+
+        function formatRupees(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function addItem() {
+            const name = itemNameInput.value.trim();
+            const quantity = parseInt(itemQuantityInput.value);
+            const sqft = parseFloat(itemSqftInput.value);
+            const costPerSqft = parseFloat(itemCostPerSqftInput.value);
+
+            if (!name) {
+                alert("Please enter an item name.");
+                return;
+            }
+            if (isNaN(quantity) || quantity < 1 || isNaN(sqft) || sqft < 0 || isNaN(costPerSqft)) {
+                alert("Please enter valid quantity, square feet, and cost.");
+                return;
+            }
+
+            if (noItemsRow) noItemsRow.style.display = 'none';
+
+            const total = quantity * sqft * costPerSqft;
+
+            const row = document.createElement('tr');
+            row.className = 'border-b';
+            row.dataset.category = "Custom Item";
+            row.dataset.name = name;
+            row.dataset.description = "User-defined item";
+            row.dataset.total = total; // Store total for easy access
+            
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm font-medium">${name}</td>
+                <td class="py-3 px-4 text-center text-sm">${quantity}</td>
+                <td class="py-3 px-4 text-center text-sm">${sqft}</td>
+                <td class="py-3 px-4 text-right text-sm">${formatRupees(costPerSqft)}</td>
+                <td class="py-3 px-4 text-right text-sm font-semibold">${formatRupees(total)}</td>
+                <td class="py-3 px-4 text-center">
+                    <button class="remove-item-btn btn-danger text-xs px-3 py-2 rounded">X</button>
+                </td>
+            `;
+            
+            row.querySelector('.remove-item-btn').addEventListener('click', () => {
+                row.remove();
+                updateGrandTotal();
+                if (itemListBody.querySelectorAll('tr:not(#no-items-row)').length === 0 && noItemsRow) {
+                    noItemsRow.style.display = 'table-row';
+                }
+            });
+
+            itemListBody.appendChild(row);
+            updateGrandTotal();
+
+            // Clear input fields for next entry
+            itemNameInput.value = '';
+            itemQuantityInput.value = 1;
+            itemSqftInput.value = 1;
+            itemCostPerSqftInput.value = 0;
+            itemNameInput.focus();
+        }
+
+        function addDeductionItem() {
+            const name = deductionItemNameInput.value.trim();
+            const quantity = parseInt(deductionItemQuantityInput.value);
+            const price = parseFloat(deductionItemPriceInput.value); 
+
+            if (!name) {
+                alert("Please enter a deduction item name.");
+                return;
+            }
+            if (isNaN(quantity) || quantity < 1 || isNaN(price) || price < 0) { 
+                alert("Please enter valid quantity and price for deduction.");
+                return;
+            }
+
+            if (noDeductionsRow) noDeductionsRow.style.display = 'none';
+
+            const totalDeduction = quantity * price;
+
+            const row = document.createElement('tr');
+            row.className = 'border-b';
+            row.dataset.totalDeduction = totalDeduction; 
+            
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm font-medium">${name}</td>
+                <td class="py-3 px-4 text-center text-sm">${quantity}</td>
+                <td class="py-3 px-4 text-right text-sm">${formatRupees(price)}</td>
+                <td class="py-3 px-4 text-right text-sm font-semibold text-red-600">-${formatRupees(totalDeduction)}</td>
+                <td class="py-3 px-4 text-center">
+                    <button class="remove-deduction-btn btn-danger text-xs px-3 py-2 rounded">X</button>
+                </td>
+            `;
+            
+            row.querySelector('.remove-deduction-btn').addEventListener('click', () => {
+                row.remove();
+                updateGrandTotal();
+                if (deductionListBody.querySelectorAll('tr:not(#no-deductions-row)').length === 0 && noDeductionsRow) {
+                    noDeductionsRow.style.display = 'table-row';
+                }
+            });
+
+            deductionListBody.appendChild(row);
+            updateGrandTotal();
+
+            // Clear input fields for next entry
+            deductionItemNameInput.value = '';
+            deductionItemQuantityInput.value = 1;
+            deductionItemPriceInput.value = 0; 
+            deductionItemNameInput.focus();
+        }
+
+        function addPackage(packageName, packageCost, packageDescription) {
+             const existingItems = itemListBody.querySelectorAll('tr:not(#no-items-row)');
+            let packageAlreadyAdded = false;
+            existingItems.forEach(row => {
+                if (row.dataset.name === packageName) {
+                    packageAlreadyAdded = true;
+                }
+            });
+
+            if (packageAlreadyAdded) {
+                alert(`The ${packageName} has already been added to the estimate.`);
+                return;
+            }
+
+            const themeInput = document.getElementById('design-theme');
+            if (themeInput.value && !themeInput.value.includes(packageName)) {
+                themeInput.value += ` + ${packageName}`;
+            } else if (!themeInput.value) {
+                themeInput.value = packageName;
+            }
+
+            if (noItemsRow) noItemsRow.style.display = 'none';
+
+            const row = document.createElement('tr');
+            row.className = 'border-b';
+            row.dataset.category = "Package";
+            row.dataset.name = packageName;
+            row.dataset.description = packageDescription;
+            row.dataset.total = packageCost; 
+            
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm font-medium">${packageName}</td>
+                <td class="py-3 px-4 text-center text-sm">1</td>
+                <td class="py-3 px-4 text-center text-sm">-</td>
+                <td class="py-3 px-4 text-right text-sm">-</td>
+                <td class="py-3 px-4 text-right text-sm font-semibold">${formatRupees(packageCost)}</td>
+                <td class="py-3 px-4 text-center">
+                    <button class="remove-item-btn btn-danger text-xs px-3 py-2 rounded">X</button>
+                </td>
+            `;
+            
+            row.querySelector('.remove-item-btn').addEventListener('click', () => {
+                row.remove();
+                const themeInput = document.getElementById('design-theme');
+                themeInput.value = themeInput.value.replace(` + ${packageName}`, '').replace(packageName, '').trim();
+                selectedPackageType = null;
+                updateGrandTotal();
+                if (itemListBody.querySelectorAll('tr:not(#no-items-row)').length === 0 && noItemsRow) {
+                    noItemsRow.style.display = 'table-row';
+                }
+            });
+
+            itemListBody.appendChild(row);
+            updateGrandTotal();
+            document.getElementById('item-list-body').scrollIntoView({ behavior: 'smooth' });
+            selectedPackageType = packageName; // Set selected package type
+        }
+
+
+        function updateGrandTotal() {
+            let itemsTotal = 0;
+            const rows = itemListBody.querySelectorAll('tr:not(#no-items-row)');
+            let packagePresent = false;
+            rows.forEach(row => {
+                itemsTotal += parseFloat(row.dataset.total);
+                if(row.dataset.category === "Package") {
+                    packagePresent = true;
+                }
+            });
+            if(!packagePresent) {
+                selectedPackageType = null;
+            }
+            
+            let deductionTotal = 0;
+            const deductionRows = deductionListBody.querySelectorAll('tr:not(#no-deductions-row)');
+            deductionRows.forEach(row => {
+                deductionTotal += parseFloat(row.dataset.totalDeduction);
+            });
+
+            const additionalCost = parseFloat(additionalFeaturesCostInput.value) || 0;
+            const finalTotal = itemsTotal + additionalCost - deductionTotal;
+            grandTotalDisplay.textContent = formatRupees(finalTotal);
+        }
+
+        function getReceiptHTML() {
+            const clientName = document.getElementById('client-name').value || 'N/A';
+            const clientPhone = document.getElementById('client-phone').value || 'N/A';
+            const clientEmail = document.getElementById('client-email').value || 'N/A';
+            const salesName = salesNameInput.value || 'N/A';
+            const salesPhone = salesPhoneInput.value || 'N/A';
+            const salesEmail = salesEmailInput.value || 'N/A';
+            const projectName = document.getElementById('design-theme').value || 'Not Specified';
+            const additionalFeaturesCost = parseFloat(additionalFeaturesCostInput.value) || 0;
+            const estimateNumber = `EST-${Math.floor(1000 + Math.random() * 9000)}`;
+            const generatedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+            let itemsTotal = 0;
+            const addedItems = {}; // To group items by category
+
+            const rows = itemListBody.querySelectorAll('tr:not(#no-items-row)');
+            rows.forEach(row => {
+                const category = row.dataset.category;
+                const isPackage = category === "Package";
+                const item = {
+                    name: row.dataset.name,
+                    description: row.dataset.description,
+                    quantity: row.children[1].textContent,
+                    sqft: isPackage ? '-' : row.children[2].textContent,
+                    costPerSqft: isPackage ? '-' : row.children[3].textContent,
+                    total: parseFloat(row.dataset.total)
+                };
+                itemsTotal += item.total;
+                
+                if (!addedItems[category]) {
+                    addedItems[category] = [];
+                }
+                addedItems[category].push(item);
+            });
+
+            let deductionTotal = 0;
+            const deductedItems = [];
+            const deductionRows = deductionListBody.querySelectorAll('tr:not(#no-deductions-row)');
+            deductionRows.forEach(row => {
+                const item = {
+                    name: row.children[0].textContent,
+                    quantity: row.children[1].textContent,
+                    price: row.children[2].textContent, 
+                    totalDeduction: parseFloat(row.dataset.totalDeduction)
+                };
+                deductionTotal += item.totalDeduction;
+                deductedItems.push(item);
+            });
+            
+            let scopeOfWorkHtml = '';
+            for (const category in addedItems) {
+                const isPackage = category === "Package";
+                scopeOfWorkHtml += `<h3 style="font-size: 1.05em; margin-top: 10px; margin-bottom: 5px; color: #4f46e5;">${category}</h3>`;
+                scopeOfWorkHtml += '<table class="receipt-table">';
+                if (isPackage) {
+                    scopeOfWorkHtml += '<thead><tr><th style="width: 50%;">PACKAGE NAME</th><th style="width: 50%;">TOTAL</th></tr></thead><tbody>';
+                     addedItems[category].forEach(item => {
+                        scopeOfWorkHtml += `<tr><td>${item.name}</td><td>${formatRupees(item.total)}</td></tr>`;
+                    });
+                } else {
+                    // MODIFIED: Removed the 'TOTAL' column for custom items in the PDF.
+                    scopeOfWorkHtml += '<thead><tr><th style="width: 30%;">PRODUCT NAME</th><th style="width: 50%;">DESCRIPTION</th><th style="width: 10%;">QTY</th><th style="width: 10%;">SQFT</th></tr></thead><tbody>';
+                    addedItems[category].forEach(item => {
+                        scopeOfWorkHtml += `<tr><td>${item.name}</td><td>${item.description}</td><td>${item.quantity}</td><td>${item.sqft}</td></tr>`;
+                    });
+                }
+                scopeOfWorkHtml += '</tbody></table>';
+            }
+
+            let deductionHtml = '';
+            if (deductedItems.length > 0) {
+                deductionHtml += `<div class="receipt-section">
+                    <h2>Deductions</h2>
+                    <table class="receipt-table">
+                        <thead><tr><th style="width: 30%;">ITEM</th><th style="width: 15%;">QTY</th><th style="width: 25%;">PRICE</th><th style="width: 30%;">DEDUCTION AMOUNT</th></tr></thead><tbody>`; 
+                deductedItems.forEach(item => {
+                    deductionHtml += `<tr><td>${item.name}</td><td>${item.quantity}</td><td>${item.price}</td><td style="color: #ef4444;">-${formatRupees(item.totalDeduction)}</td></tr>`; 
+                });
+                deductionHtml += `</tbody></table></div>`;
+            }
+
+            // Dynamically get material details based on selectedPackageType
+            let materialInfoHtml = '';
+            if (selectedPackageType && packageMaterialDetails[selectedPackageType]) {
+                materialInfoHtml += `<div class="receipt-section">
+                    <h2>Material Information (${selectedPackageType})</h2>
+                    <table class="receipt-table">
+                        <thead><tr><th style="width: 30%;">Material</th><th>Specification</th></tr></thead><tbody>`;
+                packageMaterialDetails[selectedPackageType].forEach(mat => {
+                    materialInfoHtml += `<tr><td>${mat.material}</td><td>${mat.specification}</td></tr>`;
+                });
+                materialInfoHtml += `</tbody></table></div>`;
+            } else {
+                materialInfoHtml += `<div class="receipt-section">
+                    <h2>Material Information</h2>
+                    <p>Material details will appear here once a package is selected.</p>
+                </div>`;
+            }
+
+
+            const baseAndFeaturesTotal = itemsTotal + additionalFeaturesCost;
+            const subtotalAfterDeductions = baseAndFeaturesTotal - deductionTotal;
+            const gst = subtotalAfterDeductions * 0.18;
+            const grandTotal = subtotalAfterDeductions + gst;
+
+            return `
+                <div class="p-4">
+                    <div class="receipt-header">
+                        <h1>Modern Art Interior - QUOTATION</h1>
+                        <p>Premium Design Solutions</p>
+                    </div>
+
+                    <div class="receipt-section">
+                        <h2>Quotation Details</h2>
+                        <table class="receipt-table">
+                            <tr><th style="width: 30%;">CLIENT NAME</th><td>${clientName}</td></tr>
+                            <tr><th>CLIENT CONTACT</th><td>${clientPhone}</td></tr>
+                            <tr><th>CLIENT EMAIL</th><td>${clientEmail}</td></tr>
+                            <tr><th>DESIGN THEME</th><td>${projectName}</td></tr>
+                            <tr><th>DATE</th><td>${generatedDate}</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="receipt-section">
+                        <h2>Sales Member Details</h2>
+                        <table class="receipt-table">
+                            <tr><th style="width: 30%;">SALES MEMBER NAME</th><td>${salesName}</td></tr>
+                            <tr><th>SALES MEMBER PHONE</th><td>${salesPhone}</td></tr>
+                            <tr><th>SALES MEMBER EMAIL</th><td>${salesEmail}</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="receipt-section">
+                        <h2>Scope of Work</h2>
+                        ${scopeOfWorkHtml}
+                    </div>
+                    
+                    ${deductionHtml}
+
+                    <div class="receipt-section">
+                        <h2>Cost Summary</h2>
+                        <table class="receipt-table">
+                           <tr><td style="width: 70%;">Base Interior Cost:</td><td>${formatRupees(itemsTotal)}</td></tr>
+                           <tr><td>Additional Costs:</td><td>${formatRupees(additionalFeaturesCost)}</td></tr>
+                           <tr><td>Total Deductions:</td><td style="color: #ef4444;">-${formatRupees(deductionTotal)}</td></tr>
+                           <tr><td>Subtotal (before GST):</td><td>${formatRupees(subtotalAfterDeductions)}</td></tr>
+                           <tr><td>GST (18%):</td><td>${formatRupees(gst)}</td></tr>
+                           <tr><td><b>Grand Total:</b></td><td><b>${formatRupees(grandTotal)}</b></td></tr>
+                        </table>
+                    </div>
+                    
+                    ${materialInfoHtml}
+                    
+                     <div class="receipt-section">
+                        <h2>Payment Terms</h2>
+                        <table class="receipt-table">
+                            <tr><td style="width: 30%;">5%</td><td>Booking Amount</td></tr>
+                            <tr><td>50%</td><td>Before Unloading Material</td></tr>
+                            <tr><td>30%</td><td>At the Time of Laminate Selection</td></tr>
+                            <tr><td>10%</td><td>At the Time of Paint Selection</td></tr>
+                            <tr><td>5%</td><td>To Initiate Loose Furniture Work</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="receipt-section receipt-remarks">
+                        <h2>Remarks & Terms</h2>
+                        <ul>
+                            <li>Above quote is Exclusive of GST which is 18% on total Invoice amount.</li>
+                            <li>All hardware used in standard/entry level of specified brand, any upgrade or preference in particular mechanism or system will be billed additionally.</li>
+                            <li>Our quote does not include any cost of DB, MCB & ELCB, LAN wire, ac wiring, telephone Wire, HDMI Cable, CAT06 cable Fibre Line, specific speaker wires, Camera cable and extra switch boards in case of any such requirement it will be billed additionally.</li>
+                            <li>Standing Balcony / Balcony / Open Terrace / Additional or Private Foyer area are not part of this package. Anytype of cnc work will be charged extra as per design except temple.</li>
+                            <li>Above quote exclude any type of CIVIL, Plumbing work & Fabrication Work. there will be additional cost and same is payable by client.</li>
+                            <li>Modernart interior reserves all rights to change above mentioned material and company depending on availability / selection or any other reason.</li>
+                            <li>Designer may change company or product depending on availability and trend in market.</li>
+                            <li>Our company does not take any Liability and does not entertain any claim on any type of accidental damage or damage due to Natural Calamities or Damage due to any other reason during Execution or Post-Handover.</li>
+                            <li>For Execution of Project on site it is mandatory to have Electricity and Water Supply and arrangement of same is client responsibility.</li>
+                            <li>Our company will not be held responsible for any claims arising out of defects due to material or workmanship.</li>
+                            <li>Budget does not include any type of decoration items like RUG-Runner / Decorative Pillows / Duvet or Blanket / Paintings / Artefacts / Jumar / Crockery Set / Plants / Electronics Items / Mugs / Books / Puffy / Additional Furniture Item / Civil Material like Tiles / Marble / Etc. That might be
+shown in 3D for better visualization and not mentioned in above quote.</li>
+                            <li>Delay in making timely payment OR taking time in material selection will be client liability and
+same will impact handover date. Once payment done in non refundable in any condition. Sofa
+and loose furniture will be delivered after 7 day of payment clearance.</li>
+                            <li>Changes in design during Execution stage or changing selection will impact handover date.</li>
+                            <li>Any extra work decided on site, that will be paid in 7 days.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        function generateReceipt() {
+            const clientPhone = document.getElementById('client-phone').value;
+            const clientEmail = document.getElementById('client-email').value;
+            const salesPhone = salesPhoneInput.value;
+            const salesEmail = salesEmailInput.value;
+
+            const phoneRegex = /^\d{10}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!phoneRegex.test(clientPhone)) {
+                alert("Please enter a valid 10-digit mobile number for the client.");
+                return;
+            }
+
+            if (clientEmail && !emailRegex.test(clientEmail)) {
+                alert("Please enter a valid email address for the client.");
+                return;
+            }
+
+            if (salesPhone && !phoneRegex.test(salesPhone)) {
+                alert("Please enter a valid 10-digit mobile number for the sales member.");
+                return;
+            }
+
+            if (salesEmail && !emailRegex.test(salesEmail)) {
+                alert("Please enter a valid email address for the sales member.");
+                return;
+            }
+            
+            if (itemListBody.querySelectorAll('tr:not(#no-items-row)').length === 0 && parseFloat(additionalFeaturesCostInput.value) === 0 && deductionListBody.querySelectorAll('tr:not(#no-deductions-row)').length === 0) {
+                alert("Please add at least one item, an additional cost, or a deduction to the estimate.");
+                return;
+            }
+            receiptContent.innerHTML = getReceiptHTML();
+            receiptModal.classList.remove('hidden');
+        }
+        
+        function downloadPDF() {
+            const clientName = document.getElementById('client-name').value || 'Estimate';
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `ModernArt-Interior-Quotation-${clientName.replace(/\s+/g, '-')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 3,
+                    useCORS: true,
+                    scrollY: 0, 
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(receiptContent).save();
+        }
+
+        // --- EVENT LISTENERS ---
+        addItemBtn.addEventListener('click', addItem);
+        addDeductionBtn.addEventListener('click', addDeductionItem); 
+        generateReceiptBtn.addEventListener('click', generateReceipt);
+        closeModalBtn.addEventListener('click', () => receiptModal.classList.add('hidden'));
+        downloadReceiptBtn.addEventListener('click', downloadPDF);
+        additionalFeaturesCostInput.addEventListener('input', updateGrandTotal);
+        
+        // 2BHK Listeners
+        twoBhkSuperSaverCard.addEventListener('click', () => addPackage("2BHK Super Saver Package", 999000, "Includes all items as per the 2BHK Super Saver Package brochure."));
+        twoBhkRoyalCard.addEventListener('click', () => addPackage("2BHK Royal Package", 1199000, "Includes all items as per the 2BHK Royal Package brochure."));
+
+        // 3BHK Listeners
+        threeBhkSuperSaverCard.addEventListener('click', () => addPackage("3BHK Super Saver Package", 1199000, "Includes all items as per the 3BHK Super Saver Package brochure."));
+        threeBhkLuxuryCard.addEventListener('click', () => addPackage("3BHK Luxury Package", 2199000, "Includes all items as per the 3BHK Luxury Package brochure."));
+        threeBhkRoyalCard.addEventListener('click', () => addPackage("3BHK Royal Package", 1599000, "Includes all items as per the 3BHK Royal Package brochure."));
+        
+        // 4BHK Listeners
+        fourBhkSuperSaverCard.addEventListener('click', () => addPackage("4BHK Super Saver Package", 1599000, "A complete and affordable 4BHK interior package."));
+        fourBhkRoyalCard.addEventListener('click', () => addPackage("4BHK Royal Package", 2199000, "An exclusive and grand 4BHK interior package."));
+        fourBhkLuxuryCard.addEventListener('click', () => addPackage("4BHK Luxury Package", 2799000, "The ultimate premium 4BHK interior experience."));
+
+        // 5BHK Listeners
+        fiveBhkSuperSaverCard.addEventListener('click', () => addPackage("5BHK Super Saver Package", 1999000, "A complete interior package for your 5BHK space."));
+        fiveBhkRoyalCard.addEventListener('click', () => addPackage("5BHK Royal Package", 2599000, "An exclusive and royal interior package for your 5BHK."));
+        fiveBhkLuxuryCard.addEventListener('click', () => addPackage("5BHK Luxury Package", 3399000, "The ultimate luxury interior experience for your 5BHK."));
+
+
+        btn2bhk.addEventListener('click', () => {
+            document.getElementById('2bhk-packages-section').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        btn3bhk.addEventListener('click', () => {
+            document.getElementById('3bhk-packages-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        btn4bhk.addEventListener('click', () => {
+            document.getElementById('4bhk-packages-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        btn5bhk.addEventListener('click', () => {
+            document.getElementById('5bhk-packages-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        clientPhoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        salesPhoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+    });
+    </script>
+</body>
+</html>
